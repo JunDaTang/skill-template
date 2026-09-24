@@ -2,6 +2,24 @@
 
 Skill 项目模板 —— 克隆即用，快速创建能被各 agent 安装的 skill 仓库。
 
+## Quickstart（三步上手）
+
+```bash
+# 0. 从本模板新建你的仓库（GitHub: Use this template，或）：
+git clone https://github.com/JunDaTang/skill-template.git my-skills
+cd my-skills && rm -rf .git && git init && git branch -M main
+
+# 1. 创建第一个 skill（无需 npm install，零依赖）
+npm run new -- my-skill -d "一句话写清：做什么 + 什么时候触发"
+
+# 2. 边写边校验（frontmatter / 占位符 / 引用完整性 / 行数）
+npm run validate
+```
+
+写完怎么测试触发、怎么发布，见下方[快速开始](#快速开始)第 3–5 步；**第一次写 skill？先读 [docs/writing-skills.md](docs/writing-skills.md)（15 分钟，带完整示例）。**
+
+---
+
 布局对齐当前主流 skill 仓库（[anthropics/skills](https://github.com/anthropics/skills)、[obra/superpowers](https://github.com/obra/superpowers)、[mattpocock/skills](https://github.com/mattpocock/skills)）和 [jackwener/OpenCLI](https://github.com/jackwener/OpenCLI) 的共同约定，遵循 [Agent Skills 开放规范](https://agentskills.io/specification)，兼容两条安装路径：
 
 - **skills CLI**：`npx skills add JunDaTang/skill-template --skill <name>`
@@ -84,14 +102,16 @@ ZCode 按以下优先级发现 skill（其他 agent 有各自的目录，如 Cla
 ~/.agents/skills/<name>/SKILL.md
 ```
 
-把待测 skill 链过去即可：
+把待测 skill 链过去即可（改完 skill 记得重新复制/链接，让 agent 看到最新版）：
 
 ```bash
-# Git Bash / Linux / macOS
+# Linux / macOS
 ln -s "$(pwd)/skills/my-skill" ~/.agents/skills/my-skill
 
-# Windows PowerShell（Junction 不需要管理员权限）
+# Windows：注意 Git Bash 的 ln -s 会静默退化成复制（不报错），
+# 复制对测试也够用，但每次改完 skill 要重跑；或用 PowerShell Junction：
 # New-Item -ItemType Junction -Path "$HOME\.agents\skills\my-skill" -Target "$(pwd)\skills\my-skill"
+cp -r "$(pwd)/skills/my-skill" ~/.agents/skills/my-skill
 ```
 
 然后开一个新的会话，用一个真实场景的提示词验证 skill 是否触发、行为是否符合预期。

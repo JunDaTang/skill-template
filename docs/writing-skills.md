@@ -232,8 +232,12 @@ npm run validate          # 格式门禁
 然后把 skill 链到 agent 的发现目录（模拟已安装状态）：
 
 ```bash
+# Linux / macOS
 ln -s "$(pwd)/skills/csv-cleaner" ~/.agents/skills/csv-cleaner
-# Windows PowerShell:
+
+# Windows（Git Bash 的 ln -s 会静默退化成复制，对测试够用，但每次改完要重跑）
+cp -r "$(pwd)/skills/csv-cleaner" ~/.agents/skills/csv-cleaner
+# 或 PowerShell Junction（自动跟随源目录更新）：
 # New-Item -ItemType Junction -Path "$HOME\.agents\skills\csv-cleaner" -Target "$(pwd)\skills\csv-cleaner"
 ```
 
