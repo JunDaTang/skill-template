@@ -1,6 +1,6 @@
 ---
 name: skill-release
-description: Pre-release checklist that publishes skills from a skill-template repo: runs validation, registers the skill in .claude-plugin/plugin.json, commits, pushes, and verifies remote discovery. Use whenever the user wants to publish, release, push out, or make a skill installable — phrases like "发布 skill", "推个新版本", "check if it's ready to ship", "make it installable". Also use before pushing any change to skills/.
+description: "Pre-release checklist that publishes skills from a skill-template repo — validation, plugin.json registration, push, and remote-discovery verification. Use whenever the user wants to publish, release, push out, or make a skill installable — phrases like \"发布 skill\", \"推个新版本\", \"check if it's ready to ship\", \"make it installable\". Also use before pushing any change to skills/."
 ---
 
 # skill-release

@@ -150,6 +150,9 @@ for (const { dir, skillMd } of found) {
       error(relDir, "description cannot contain angle brackets (< or >)");
     if (desc.length > 1024)
       error(relDir, `description too long (${desc.length} chars, max 1024)`);
+    // 裸冒号会被 YAML 解析成嵌套映射（skills CLI 直接跳过该 skill）—— 加引号或改用破折号
+    if (/^[^"'].*:\s/.test(desc))
+      error(relDir, `description contains an unquoted ":" — wrap the value in double quotes`);
     if (desc.length < 40)
       warn(
         relDir,
