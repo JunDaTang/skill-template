@@ -1,0 +1,11 @@
+{
+  "name": "skill-template",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Skill 项目模板：克隆即用，兼容 npx skills add",
+  "scripts": {
+    "new": "node scripts/new-skill.mjs",
+    "validate": "node scripts/validate.mjs"
+  }
+}
