@@ -1,0 +1,22 @@
+{
+  "name": "skill-template",
+  "owner": {
+    "name": "JunDaTang",
+    "url": "https://github.com/JunDaTang"
+  },
+  "description": "Skill project template: scaffold, validate, and publish installable agent skills.",
+  "plugins": [
+    {
+      "name": "skill-template",
+      "source": "./",
+      "description": "Skill project template: scaffold, validate, and publish installable agent skills.",
+      "category": "productivity",
+      "keywords": [
+        "skills",
+        "template",
+        "scaffold",
+        "agent"
+      ]
+    }
+  ]
+}

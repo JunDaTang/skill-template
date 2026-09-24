@@ -1,0 +1,19 @@
+{
+  "name": "skill-template",
+  "version": "0.1.0",
+  "description": "Skill project template: scaffold, validate, and publish installable agent skills.",
+  "author": {
+    "name": "JunDaTang",
+    "url": "https://github.com/JunDaTang"
+  },
+  "repository": "https://github.com/JunDaTang/skill-template",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "template",
+    "scaffold"
+  ],
+  "skills": [
+    "./skills/example-skill"
+  ]
+}

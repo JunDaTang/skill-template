@@ -21,11 +21,15 @@ Arguments:
 Options:
   -d, --description <text>  Skill description (required). One sentence covering
                             what it does + when to trigger it.
+  -c, --category <name>     Put the skill under skills/<category>/<name>/
+                            (e.g. engineering, productivity). Category is
+                            auto-created. Skills CLI discovers 3 levels deep.
   --minimal                 Only create SKILL.md (no references/ scripts/ assets/)
   -h, --help                Show this help
 
 Examples:
   npm run new -- csv-cleaner -d "Clean and normalize CSV exports. Use whenever the user mentions dirty data, dedup, or spreadsheet cleanup."
+  npm run new -- deploy-helper -d "..." -c engineering
   node scripts/new-skill.mjs deploy-helper -d "..." --minimal`;
 
 function fail(msg) {
@@ -42,6 +46,7 @@ if (args.length === 0 || args.includes("-h") || args.includes("--help")) {
 
 let name = null;
 let description = null;
+let category = null;
 let minimal = false;
 
 for (let i = 0; i < args.length; i++) {
@@ -49,6 +54,9 @@ for (let i = 0; i < args.length; i++) {
   if (a === "-d" || a === "--description") {
     description = args[++i];
     if (description === undefined) fail("--description requires a value");
+  } else if (a === "-c" || a === "--category") {
+    category = args[++i];
+    if (category === undefined) fail("--category requires a value");
   } else if (a === "--minimal") {
     minimal = true;
   } else if (a.startsWith("-")) {
@@ -61,17 +69,20 @@ for (let i = 0; i < args.length; i++) {
 
 if (!name) fail("skill name is required");
 if (!description) fail("description is required (-d)");
+if (category) {
+  if (!/^[a-z0-9][a-z0-9-]*$/.test(category) || category.length > 64)
+    fail(`invalid category "${category}": lowercase kebab-case, max 64 chars`);
+}
 
 // ---------- validate ----------
-if (!/^[a-z0-9][a-z0-9-]*$/.test(name)) {
-  fail(`invalid name "${name}": must be lowercase kebab-case (letters, digits, hyphens)`);
+if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(name)) {
+  fail(`invalid name "${name}": lowercase kebab-case; no leading/trailing/consecutive hyphens`);
 }
 if (name.length > 64) fail(`name too long (${name.length} chars, max 64)`);
-if (/^-|-$/.test(name)) fail(`name cannot start or end with a hyphen`);
 
-const target = path.join(SKILLS_DIR, name);
+const target = path.join(SKILLS_DIR, category ?? "", name);
 if (fs.existsSync(target)) {
-  fail(`skills/${name} already exists — pick another name or delete it first`);
+  fail(`skills/${path.posix.join(category ?? "", name)} already exists — pick another name or delete it first`);
 }
 if (!fs.existsSync(TEMPLATE_DIR)) {
   fail(`template not found: ${TEMPLATE_DIR} (is the repo intact?)`);
@@ -102,11 +113,13 @@ if (minimal) {
   }
 }
 
-console.log(`Created skills/${name}/`);
+const rel = path.posix.join(category ?? "", name);
+console.log(`Created skills/${rel}/`);
 console.log(`
 Next steps:
-  1. Edit skills/${name}/SKILL.md — replace guidance comments with real content, then delete them.
+  1. Edit skills/${rel}/SKILL.md — replace guidance comments with real content, then delete them.
   2. Run: npm run validate
   3. Link it into an agent skills dir to test triggering, e.g.:
-     ln -s "$(pwd)/skills/${name}" ~/.agents/skills/${name}
+     ln -s "$(pwd)/skills/${rel}" ~/.agents/skills/${name}
+  4. If you added a new category, also add the skill to .claude-plugin/plugin.json "skills".
 `);

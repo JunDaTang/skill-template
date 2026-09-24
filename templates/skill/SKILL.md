@@ -5,16 +5,21 @@ description: {{description}}
 
 <!--
   ↑ frontmatter 是唯一的「常驻上下文」——只有 name 和 description 会一直占用模型上下文。
-  写法要求：
-  - name：小写 kebab-case，1–64 字符，必须与目录名一致（脚手架已保证）。
-  - description：必须同时回答「做什么」+「什么时候用」，写得主动一点。
-    模型倾向于漏触发而不是误触发，所以要覆盖用户可能的措辞。
+  Agent Skills 官方规范（agentskills.io）定义的合法字段就这 6 个，写别的会被校验器拒绝：
+  - name（必填）：小写字母/数字/连字符，1-64 字符，不以-开头/结尾、无连续--，与目录名一致。
+  - description（必填）：1-1024 字符，不能含尖括号 <>。必须同时回答「做什么」+「什么时候用」，
+    写得主动一点 —— 模型倾向于漏触发而不是误触发，所以要覆盖用户可能的措辞。
     反例：Helps with data processing.
     正例：Process and normalize CSV/Excel export files. Use whenever the user mentions
           cleaning data, deduplicating rows, or converting spreadsheets — even if they
           don't say "process" explicitly.
   可选字段（按需取消注释）：
-  allowed-tools: Bash(git:*), Read, Edit, Write   # 限制触发后可用的工具
+  license: MIT
+  allowed-tools: Bash(git:*) Read Edit    # 预授权工具（实验性，各 agent 支持度不同）
+  compatibility: Requires Node 20+ and git   # 环境要求，≤500 字符，多数 skill 不需要
+  metadata:                                  # 字符串到字符串的映射，值要加引号
+    author: your-name
+    version: "1.0"
 -->
 
 # {{name}}
